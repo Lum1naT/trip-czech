@@ -19,5 +19,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('', views.index, name="index"),
+    path('cs/', views.cs_index, name="cs_index"),
+    path('', views.cs_index, name="cs_index"),
 ]
