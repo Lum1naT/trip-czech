@@ -19,6 +19,21 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    # CZ section - include both cs/ and '' versions! two per page!
     path('cs/', views.cs_index, name="cs_index"),
     path('', views.cs_index, name="cs_index"),
+    path('cs/galerie', views.cs_gallery, name="cs_gallery"),
+    path('galerie', views.cs_gallery, name="cs_gallery"),
+    path('cs/sluzby', views.cs_services, name="cs_services"),
+    path('sluzby', views.cs_services, name="cs_services"),
+    path('cs/kontakt', views.cs_contact, name="cs_contact"),
+    path('kontakt', views.cs_contact, name="cs_contact"),
+    path('cs/poptavka/1', views.cs_form_initial, name="cs_form_initial"),
+
+
+
+    # DE section
+    path('de/', views.de_index, name="de_index"),
+
+
 ]

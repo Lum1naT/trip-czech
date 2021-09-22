@@ -1,0 +1,14 @@
+{% extends "./_base.html" %} 
+
+{% block title %}  Form initial {% endblock %} 
+
+{% block body %}
+<h1>Hello!</h1>
+<h2>Welcome to form init.</h2>
+
+<form action="/cs/poptavka/1" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
