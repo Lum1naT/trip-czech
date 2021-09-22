@@ -11,6 +11,13 @@ ROOM_TYPES = (
     ('4', 'Čtyřlůžkový'),
 )
 
+
+ACCOMODATION_TYPES = (
+    ('HTL', 'Hotel'),
+    ('PNZ', 'Penzion'),
+    ('APT', 'Apartmán'),
+)
+
 PARTS_OF_REPUBLIC = (
     ('CZE', 'Čechy'),
     ('MOR', 'Morava'),
@@ -29,6 +36,20 @@ REGIONS = (
 )
 
 
+COUNTRIES = (
+    ('CZE', 'Česká Republika'),
+    ('DEU', 'Německo'),
+    ('AUS', 'Rakousko'),
+    ('POL', 'Polsko'),
+    ('SVK', 'Slovensko'),
+    ('HUN', 'Maďarsko'),
+    ('SWI', 'Švýcarsko'),
+    ('ITA', 'Itálie'),
+    ('FRA', 'Francie'),
+
+)
+
+'''
 class Accomodation(models.Model):
     name = models.CharField(max_length=255)
     link_to_gmaps = models.CharField(max_length=999)
@@ -39,19 +60,43 @@ class Accomodation(models.Model):
                                 ])
     room_types = MultiSelectField(choices=ROOM_TYPES)
 
+'''
+
 
 class Location(models.Model):
     name = models.CharField(max_length=255)
-    part_of_republic = models.CharField(max_length=255,
+    part_of_republic = models.CharField(max_length=3,
                                         choices=PARTS_OF_REPUBLIC, default="CZE")
 
+    region = models.CharField(max_length=3,
+                              choices=REGIONS, default="none")
 
-region = models.CharField(max_length=255,
-                          choices=REGIONS, default="none")
+
+class Extra(models.Model):
+    name = models.CharField(max_length=255)
+    region = models.CharField(max_length=3, choices=REGIONS)
 
 
 class Inquiry(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     gdpr = models.BooleanField(default=False)
-    # end of step one - COMMIT!
+    ## End of step 1 - CERATEA INQUIRY! ##
+    travelling_from = models.CharField(max_length=5, choices=COUNTRIES)
+    guide_required = models.BooleanField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    ## End of step 2 ##
+    location = models.ForeignKey(Location,
+                                 on_delete=models.SET_NULL, null=True)
+    accomodation_type = models.CharField(
+        max_length=3, choices=ACCOMODATION_TYPES)
+    number_of_people = models.IntegerField(
+        validators=[
+            MaxValueValidator(50),
+            MinValueValidator(1)
+        ])
+
+    ## End of step 3 ##
+    extras = models.ManyToManyField(Extra)
+    note = models.TextField()
